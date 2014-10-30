@@ -5,7 +5,7 @@
 	|		|		|		It is very light-weight,with high performance,you will like it.
 	|----	|		|----	The only pity is it's php 5.3 + only
 	|		|		|		Author	:	Bitchzhi
-	-----	-----	|		Date	:	Mar. 21, 2014
+	-----	-----	|		Date	:	Mar. 21, 2014 changed on 2014-10-30(just add this comment)
 	
  *****************************************************************************************/
 
