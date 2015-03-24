@@ -1,0 +1,118 @@
+---------------------------------------------------------------------------------------------------
+template
+
+	<{$variable|func:$(0),param1,param2,...}> is available(we can use this is array loop)
+	description
+		$variable
+			the variable we want to operate with.e.g. we assign a variable in the controller "$this->assign('variable',$variable)" or we assign an array
+			$this->assign('arr',array('one','two','three'));
+			then we can use it in the template 
+			eg.tpl
+				<{loop $arr $variable}>
+					<{$variable|substr:$(0),1,2}>
+				<{ /loop }>
+		|
+			this is the delimiter between the target variable and function
+		func
+			the function we want to effect the $variable.
+			we can use an internal function like substr() or we can use a outer function,for example,we define a function in /commons/functions.inc.php
+				function color($tar,$color){
+					return '<font color="'.$color.'">'.$tar.'</font>';
+				}
+			the most important thing is that the function is available(have been included)
+		:
+			the delimiter between function and parameters
+		$(0)
+			this is the placeholder of the $variable(position is not fixed,we can place it any where depending on the need).that's to say,it's value is $variable
+			one thing we should notice is,we should not enclose it with single or double quotes
+		param1,param2,...
+			the function parameters list.
+			if it is a string,single or double quote are encouraged
+---------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+cache
+
+	function notice(){
+		$cache=new \Elf\Cache();
+		$values=$cache->get($_SERVER['REQUEST_URI']);
+		if($values==false){
+		
+		//do something like this
+			$n=D("notice");
+			$notice=$n->where(array("id"=>$_GET["id"], "display"=>'1'))->find();
+			$this->assign("notice", $notice);
+		//end do something
+		
+			$this->show($cache);
+		}else{
+			echo $values;
+		}
+	}
+		
+	description
+		this is standard and classic example of using cache in elfphp
+---------------------------------------------------------------------------------------------------
+
+
+
+---------------------------------------------------------------------------------------------------
+route
+
+	<?php
+	return array(
+		array(
+			'regexp'=>'/hello(\d+)(\w+)/',
+			'controller'=>'index',
+			'action'=>'aaa',
+			'params'=>array('id','name'),
+		),
+		array(
+			'regexp'=>'/one(\d+)(\w+)/',
+			'controller'=>'index',
+			'action'=>'index',
+			'params'=>array('id','name'),
+		),
+	);
+	
+	this is the standard format,so easy?
+---------------------------------------------------------------------------------------------------		
+
+
+
+---------------------------------------------------------------------------------------------------
+language
+
+	zh-cn/common_lang.php
+	<?php
+	return array(
+		"framename"=>"蜉蝣",
+		"info"=>array(
+			"author"=>"志",
+			"date"=>"2014-3-22",
+		),
+	);
+
+	if we want to use language,there are two ways of using it.
+		one. 
+			we can assign it in the controller like this:
+				public function lan(){
+					$one=$GLOBALS['lang']['framename'];
+					$this->assign('one',$one);
+					$two=lang('framename');
+					$this->assign('two',$two);
+					$this->assign('date',lang('info','date'));
+					$this->display();
+				}
+		two.
+			we can use it directly in the template like this:
+				<{$one}><br>
+				<{$two}><br>
+				<{$lang.framename}><br>					//we didn't assign it in the controller
+				<{$lang.info.author}><br>				//we didn't assign it in the controller yet
+				<{$date}><br>
+	
+	
+---------------------------------------------------------------------------------------------------
+	

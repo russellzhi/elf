@@ -52,9 +52,8 @@ namespace Elf;
 	set_include_path($include_path);
 	
 	spl_autoload_register('Elf\autoload');
-	function autoload($className){	
-	$className=substr(strrchr(__NAMESPACE__."\\".$className,"\\"),1);
-	
+	function autoload($className){
+		$className=substr(strrchr(__NAMESPACE__."\\".$className,"\\"),1);	
 		if($className=="memcache"){
 			return;	
 		}else{
@@ -112,12 +111,7 @@ namespace Elf;
 	define("B_URL", rtrim($GLOBALS["url"], '/'));
 	define("B_RES", rtrim($GLOBALS["res"], '/'));
 	
-	
-	
-	
-	/**
-	*	language
-	**/
+	/***************** start language ***********************************************/
 	$lang = array();
 	$languagefile= ELF_PATH."language/".LANGUAGE."/common_lang.php";
 	if (file_exists($languagefile)) {
@@ -145,6 +139,7 @@ namespace Elf;
 		Debug::addmsg("加载项目目录当前模块下的当前action语言包文件: <b>$languagefile</b> ");
 	}
 	$GLOBALS["lang"] = $lang;
+	/******************* end language ***********************************************/
 	
 	$srccontrollerfile=APP_PATH."controllers/".strtolower($_GET["m"]).".class.php";
 	Debug::addmsg("当前访问的控制器类在项目应用目录下的: <b>$srccontrollerfile</b> 文件！");

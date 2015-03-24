@@ -102,22 +102,6 @@ class Mytpl {
 			'file_get_contents($this->template_dir."/${1}")',
 		);
 		
-		/* start function <{$arr.variable|substr:$(0),1,2}> <?php echo substr($arr["variable"],1,2);?> support multi level*/
-		$func2_pattern='/'.$left.'\s*\$(([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.(([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff][\w\.]+)?))\s*\|\s*([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\:\s*(.*?\$\(0\).*?)\s*'.$right.'/i';
-		preg_match_all($func2_pattern,$content,$matches,PREG_SET_ORDER);
-		//var_dump($matches);exit();
-		foreach($matches as $match){
-			$pattern[]='/'.preg_quote($match[0]).'/i';
-			$key_arr=explode('.',$match[1]);
-			$key_str='';
-			foreach($key_arr as $val){
-				$key_str.='["'.$val.'"]';
-			}
-			$params=str_replace('$(0)',"\$this->tpl_vars".$key_str,$match[6]);
-			$replacement[]='<?php echo '.(string) $match[5].'('.$params.'); ?>';
-		}
-		/* end function */
-		
 		
 		/* start function <{$variable|substr:$(0),1,2}> <?php echo substr($variable,1,2);?> */
 		$func_pattern='/'.$left.'\s*\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\|\s*([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\:\s*(.*?\$\(0\).*?)\s*'.$right.'/i';
@@ -128,6 +112,7 @@ class Mytpl {
 			$replacement[]='<?php echo '.(string) $match[2].'('.$params.'); ?>';
 		}			
 		/* end function */
+		
 		
 		/* start array match <{$arr.one}><{$arr.one.two}>	<?php echo $arr["one"];?> <?php echo $arr["one"]["two"];?>*/
 		$arr_pattern='/'.$left.'\s*\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\.(([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]).*?)\s*'.$right.'/i';

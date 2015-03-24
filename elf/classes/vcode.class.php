@@ -94,7 +94,8 @@
  			  }
 		}
 
-		private function outputImage(){              
+		private function outputImage(){    
+			ob_clean();
 			//自动检测GD支持的图像类型，并输出图像
 			if(imagetypes() & IMG_GIF){          //判断生成GIF格式图像的函数是否存在
 				header("Content-type: image/gif");  //发送标头信息设置MIME类型为image/gif

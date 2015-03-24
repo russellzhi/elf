@@ -1,4 +1,13 @@
 <?php
+/******************************************************************************************
+
+	-----	|		-----		Hello buddy,you are awesome to choose Elf Framework
+	|		|		|		It is very light-weight,with high performance,you will like it.
+	|----	|		|----	The only pity is it's php 5.3 + only
+	|		|		|		Author	:	Bitchzhi
+	-----	-----	|		Date	:	Jun. 14, 2014
+	
+ *****************************************************************************************/
 namespace Elf;
 class Cache {
 	private $cache_path;
@@ -31,24 +40,24 @@ class Cache {
 	}
 
 	public function get($key){
-	if($this->caching==true){
-		$filename = $this->fileName($key);
-		if (!file_exists($filename) || !is_readable($filename)){
+		if($this->caching==true){
+			$filename = $this->fileName($key);
+			if (!file_exists($filename) || !is_readable($filename)){
+				return false;
+			}
+			if ( time() < (filemtime($filename) + $this->cache_expire) ) {
+				$file = fopen($filename, "r");
+				if ($file){
+					$data = fread($file, filesize($filename));
+					fclose($file);
+					return unserialize($data);
+				}
+				else return false;
+			}
+			else return false;
+		}else{
 			return false;
 		}
-		if ( time() < (filemtime($filename) + $this->cache_expire) ) {
-			$file = fopen($filename, "r");
-	        if ($file){
-	            $data = fread($file, filesize($filename));
-	            fclose($file);
-	            return unserialize($data);
-	        }
-	        else return false;
-		}
-		else return false;
-	}else{
-		return false;
-	}
  	}
 	
 	public function clear($module,$app='Home'){
@@ -56,18 +65,18 @@ class Cache {
 		if($module=="")
 			$path=rtrim($path,'/');
 		$handle=opendir($path);
-		while(false!==($filename=readdir($handle))) {  
-					$file=$path.'/'.$filename;
-					if($filename!="." && $filename!="..") {   
-						if(is_dir($file)) {
-							\deldir($file);
-						} else {
-							unlink($file);
-							echo "deleted $filename<br>";
-						}           
-					}
-				}
-				closedir($handle); 
+		while(false!==($filename=readdir($handle))) {
+			$file=$path.'/'.$filename;
+			if($filename!="." && $filename!="..") {
+				if(is_dir($file)) {
+					\deldir($file);
+				} else {
+					unlink($file);
+					echo "deleted $filename<br>";
+				}         
+			}
+		}
+		closedir($handle);
 	}	
 		
 	
